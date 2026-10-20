@@ -9,6 +9,7 @@ description = "Detects flaky tests from CI results and fixes them with an AI age
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "anthropic>=1.15",
     "fastapi>=0.115",
     "uvicorn>=0.30",
     "sqlalchemy>=2.0.36",
