@@ -35,7 +35,7 @@ AI = [Depends(require_ai)]
 def get_llm(request: Request) -> Any:
     if request.app.state.llm is None:
         try:
-            request.app.state.llm = make_client()
+            request.app.state.llm = make_client(request.app.state.settings)
         except anthropic.AnthropicError as exc:
             raise HTTPException(503, "Anthropic credentials are not configured") from exc
     return request.app.state.llm

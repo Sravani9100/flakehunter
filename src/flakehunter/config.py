@@ -1,6 +1,7 @@
 from functools import lru_cache
 from pathlib import Path
 
+from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -23,7 +24,9 @@ class Settings(BaseSettings):
 
     flake_window_days: int = 14
 
-    # AI diagnosis and fixing. Credentials come from ANTHROPIC_API_KEY (no prefix).
+    # AI diagnosis and fixing. Read from ANTHROPIC_API_KEY (no prefix), including in .env.
+    # When unset, the SDK falls back to its own credential discovery.
+    anthropic_api_key: SecretStr | None = Field(default=None, validation_alias="ANTHROPIC_API_KEY")
     ai_enabled: bool = True
     anthropic_model: str = "claude-opus-5-5"
     ai_effort: str = "high"

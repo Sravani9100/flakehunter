@@ -42,7 +42,8 @@ NO_COMMIT = "0" * 40
 
 def run_case(case: Case, client, base_settings) -> dict:
     started = time.monotonic()
-    with tempfile.TemporaryDirectory() as tmp:
+    # Windows can hold the SQLite file open briefly after dispose(); don't fail on cleanup.
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
         settings = base_settings.model_copy(
             update={"database_url": f"sqlite:///{tmp}/evals.db", "allow_local_repos": True}
         )
@@ -140,7 +141,7 @@ def main() -> None:
     settings = get_settings()
     if args.verify_runs:
         settings = settings.model_copy(update={"verify_runs": args.verify_runs})
-    client = make_client()
+    client = make_client(settings)
 
     rows = []
     for case in load_cases(args.cases or None):

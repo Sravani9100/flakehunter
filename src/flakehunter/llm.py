@@ -21,7 +21,9 @@ class RefusalError(RuntimeError):
     pass
 
 
-def make_client() -> anthropic.Anthropic:
+def make_client(settings: Settings) -> anthropic.Anthropic:
+    if settings.anthropic_api_key:
+        return anthropic.Anthropic(api_key=settings.anthropic_api_key.get_secret_value())
     return anthropic.Anthropic()
 
 
@@ -29,6 +31,8 @@ def describe_error(exc: Exception) -> str:
     """A message for the dashboard. Tracebacks stay in the server log."""
     if isinstance(exc, anthropic.AuthenticationError) or "authentication method" in str(exc):
         return "No valid Anthropic API key: set ANTHROPIC_API_KEY where the API server runs."
+    if "credit balance is too low" in str(exc):
+        return "The Anthropic account is out of credits. Add credits under Plans & Billing."
     if isinstance(exc, anthropic.RateLimitError):
         return "Rate limited by the Anthropic API. Try again in a minute."
     if isinstance(exc, anthropic.APIConnectionError):
