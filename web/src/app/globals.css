@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f7f7f5;
+  --surface: #ffffff;
+  --surface-2: #f1f1ee;
+  --border: #e3e3df;
+  --text: #1c1c1a;
+  --muted: #6b6b66;
+  --accent: #4f46e5;
+  --accent-soft: #eef0ff;
+  --pass: #16a34a;
+  --pass-soft: #e8f6ec;
+  --fail: #dc2626;
+  --fail-soft: #fdecec;
+  --warn: #b45309;
+  --warn-soft: #fdf3e3;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111110;
+    --surface: #1a1a19;
+    --surface-2: #232321;
+    --border: #2f2f2c;
+    --text: #ececea;
+    --muted: #9b9b95;
+    --accent: #8b85ff;
+    --accent-soft: #24234a;
+    --pass: #4ade80;
+    --pass-soft: #12301d;
+    --fail: #f87171;
+    --fail-soft: #3a1717;
+    --warn: #fbbf24;
+    --warn-soft: #3a2a0e;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-pass: var(--pass);
+  --color-pass-soft: var(--pass-soft);
+  --color-fail: var(--fail);
+  --color-fail-soft: var(--fail-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Model-written markdown (explanations, suggested fixes). */
+.markdown > * + * {
+  margin-top: 0.6em;
+}
+.markdown code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--surface-2);
+  border-radius: 4px;
+  padding: 0.1em 0.3em;
+}
+.markdown pre {
+  background: var(--surface-2);
+  border-radius: 6px;
+  padding: 0.75em 1em;
+  overflow-x: auto;
+}
+.markdown pre code {
+  background: none;
+  padding: 0;
+}
+.markdown ul {
+  list-style: disc;
+  padding-left: 1.25em;
+}
+.markdown ol {
+  list-style: decimal;
+  padding-left: 1.25em;
+}
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  font-weight: 600;
+}
+.markdown a {
+  color: var(--accent);
+  text-decoration: underline;
+}

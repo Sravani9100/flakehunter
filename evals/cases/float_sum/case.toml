@@ -1,0 +1,5 @@
+category = "ordering"
+also_accept = ["randomness"]
+flaky_test = "test_cart::test_cart_total_charges_each_item_once"
+root_cause = "Set iteration order varies with PYTHONHASHSEED, and float addition isn't associative, so the sum differs in the last bit."
+expected_fix = "Compare with pytest.approx (or use Decimal for money). Sorting the set alone hides the float issue."

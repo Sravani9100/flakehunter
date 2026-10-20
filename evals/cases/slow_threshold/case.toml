@@ -1,0 +1,4 @@
+category = "timing"
+flaky_test = "test_search::test_search_returns_query"
+root_cause = "A functional test asserts a wall-clock latency budget that real work exceeds about a quarter of the time."
+expected_fix = "Keep the functional assertion and drop the wall-clock check (or move it to a benchmark); don't just raise the threshold."

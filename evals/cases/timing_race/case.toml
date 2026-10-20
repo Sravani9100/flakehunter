@@ -1,0 +1,5 @@
+category = "timing"
+also_accept = ["concurrency"]
+flaky_test = "test_report_job::test_report_job_completes"
+root_cause = "The test waits a fixed 50ms for a background thread that takes 10-60ms."
+expected_fix = "Wait on a completion signal (threading.Event or Thread.join with timeout) instead of sleeping."

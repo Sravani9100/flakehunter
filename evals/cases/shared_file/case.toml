@@ -1,0 +1,4 @@
+category = "shared_state"
+flaky_test = "test_reports::test_report_round_trip"
+root_cause = "Every run writes to the same report.json in the working directory, so parallel runs (pytest-xdist, or the sandbox's workers) overwrite each other. It never fails when run alone."
+expected_fix = "Write to pytest's tmp_path by passing a path to save_report."

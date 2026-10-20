@@ -1,0 +1,4 @@
+category = "concurrency"
+flaky_test = "test_counter::test_concurrent_increments_are_counted"
+root_cause = "increment() reads, yields, then writes without a lock, so concurrent increments are lost."
+expected_fix = "Guard the read-modify-write with a threading.Lock in HitCounter. The test is right."

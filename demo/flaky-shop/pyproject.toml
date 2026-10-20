@@ -1,0 +1,9 @@
+[project]
+name = "flaky-shop"
+version = "0.1.0"
+description = "Demo project for FlakeHunter: a small shop backend with a few flaky tests."
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

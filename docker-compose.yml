@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: flakehunter
+      POSTGRES_PASSWORD: flakehunter
+      POSTGRES_DB: flakehunter
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flakehunter"]
+      interval: 2s
+      retries: 15
+
+  api:
+    build: .
+    environment:
+      FLAKEHUNTER_DATABASE_URL: postgresql+psycopg://flakehunter:flakehunter@db:5432/flakehunter
+      FLAKEHUNTER_UPLOAD_TOKEN: ${FLAKEHUNTER_UPLOAD_TOKEN:-change-me}
+      FLAKEHUNTER_CORS_ORIGINS: '["http://localhost:3000"]'
+      FLAKEHUNTER_GITHUB_APP_ID: ${FLAKEHUNTER_GITHUB_APP_ID:-}
+      FLAKEHUNTER_GITHUB_WEBHOOK_SECRET: ${FLAKEHUNTER_GITHUB_WEBHOOK_SECRET:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./web
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    environment:
+      API_URL: http://api:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

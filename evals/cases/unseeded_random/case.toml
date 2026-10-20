@@ -1,0 +1,4 @@
+category = "randomness"
+flaky_test = "test_discounts::test_discount_code_format"
+root_cause = "The code is random and nothing guarantees a digit; (26/36)^6 = about 14% of codes have none."
+expected_fix = "Decide the requirement: either guarantee a digit in generate_discount_code, or drop the digit assertion. Seeding alone hides the bug."

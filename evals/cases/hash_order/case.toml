@@ -1,0 +1,5 @@
+category = "ordering"
+also_accept = ["randomness"]
+flaky_test = "test_tags::test_unique_tags_removes_duplicates"
+root_cause = "Set iteration order of strings depends on PYTHONHASHSEED, which is randomized per process."
+expected_fix = "Preserve first-seen order with dict.fromkeys(tags), or compare as sets if order doesn't matter."

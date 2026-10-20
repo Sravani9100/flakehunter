@@ -1,0 +1,5 @@
+category = "concurrency"
+also_accept = ["ordering"]
+flaky_test = "test_fetcher::test_fetch_all_keeps_input_order"
+root_cause = "Workers append results in completion order, which depends on random latency."
+expected_fix = "Return the results of asyncio.gather directly, which preserves input order. The test's expectation is correct."
