@@ -21,6 +21,13 @@ def test_pass_and_fail_on_same_commit_is_flaky():
     assert stats[1].last_flake_at == T0 + timedelta(minutes=5)
 
 
+def test_last_flake_is_the_last_failure_not_the_last_run():
+    stats = compute_flake_stats(
+        [row(1, "aaa", "failed", 0), row(1, "aaa", "passed", 30), row(1, "aaa", "passed", 60)]
+    )
+    assert stats[1].last_flake_at == T0
+
+
 def test_regression_then_fix_is_not_flaky():
     # Broken on bbb and fixed on ccc: every commit has a consistent outcome.
     stats = compute_flake_stats(

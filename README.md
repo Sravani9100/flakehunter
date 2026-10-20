@@ -4,7 +4,16 @@ Finds flaky tests in your CI, explains why they flake, and fixes them with an AI
 A fix is only reported when the test **passes every one of 100 fresh-process reruns** and
 the change doesn't skip, delete, or weaken the test.
 
-<!-- Add a screenshot or GIF of the fix-attempt page here: docs/demo.gif -->
+![A flaky test's page: fail rate, pass/fail history per commit, and the latest failure](docs/test-detail.png)
+
+<details>
+<summary>Flaky tests ranked for a repository</summary>
+
+![Flaky tests in demo/flaky-shop, ranked by flaky commits and fail rate](docs/flaky-tests.png)
+
+</details>
+
+<!-- TODO: add a screenshot of a real AI fix attempt (trace, diff, 100/100 verification) once evals have run. -->
 
 ## How it works
 
@@ -140,7 +149,7 @@ Environment variables (or `.env`). See `.env.example` for all of them.
 | Variable | Default | |
 |---|---|---|
 | `ANTHROPIC_API_KEY` | unset | Needed for diagnosis and fixes |
-| `FLAKEHUNTER_ANTHROPIC_MODEL` | `claude-opus-5-5` | |
+| `FLAKEHUNTER_ANTHROPIC_MODEL` | `claude-opus-5-5` | `claude-haiku-5-5` is ~40x cheaper; set `FLAKEHUNTER_AI_FALLBACKS=false` with it |
 | `FLAKEHUNTER_AI_EFFORT` | `high` | `low` to `max`; trades cost against depth |
 | `FLAKEHUNTER_VERIFY_RUNS` | `100` | Reruns a fix must pass |
 | `FLAKEHUNTER_SANDBOX` | `subprocess` | `docker` for untrusted code (build `Dockerfile.sandbox`) |

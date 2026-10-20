@@ -43,7 +43,7 @@ export default async function TestPage({
         <HistoryStrip history={test.history} />
       </Card>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid items-start gap-6 lg:grid-cols-2">
         <DiagnosisPanel diagnoseUrl={`${base}/diagnose`} initial={test.diagnosis} aiEnabled={test.ai_enabled} />
         <div className="space-y-6">
           <FixPanel fixUrl={`${base}/fix`} attempts={test.fix_attempts} aiEnabled={test.ai_enabled} />

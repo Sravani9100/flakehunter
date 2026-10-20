@@ -44,8 +44,7 @@ class FlakeStats:
 @dataclass
 class _CommitOutcomes:
     passed: bool = False
-    failed: bool = False
-    latest: datetime | None = None
+    latest_failure: datetime | None = None
 
 
 def compute_flake_stats(rows: Iterable[ResultRow]) -> dict[int, FlakeStats]:
@@ -60,18 +59,18 @@ def compute_flake_stats(rows: Iterable[ResultRow]) -> dict[int, FlakeStats]:
         test.runs += 1
         if row.outcome in _FAILING:
             test.failures += 1
-            commit.failed = True
+            if commit.latest_failure is None or row.recorded_at > commit.latest_failure:
+                commit.latest_failure = row.recorded_at
         else:
             commit.passed = True
-        if commit.latest is None or row.recorded_at > commit.latest:
-            commit.latest = row.recorded_at
 
     for (test_case_id, _), commit in commits.items():
-        if commit.passed and commit.failed:
+        if commit.passed and commit.latest_failure is not None:
             test = stats[test_case_id]
             test.flaky_commits += 1
-            if test.last_flake_at is None or commit.latest > test.last_flake_at:
-                test.last_flake_at = commit.latest
+            # The last flake is the last failure on a commit that also passed.
+            if test.last_flake_at is None or commit.latest_failure > test.last_flake_at:
+                test.last_flake_at = commit.latest_failure
 
     return stats
 

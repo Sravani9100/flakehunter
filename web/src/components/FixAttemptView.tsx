@@ -101,7 +101,7 @@ export function FixAttemptView({ id }: { id: number }) {
         </div>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-5">
+      <div className="grid items-start gap-6 lg:grid-cols-5">
         <div className="space-y-6 lg:col-span-3">
           {attempt.explanation && (
             <Card
