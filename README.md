@@ -171,7 +171,7 @@ Environment variables (or `.env`). See `.env.example` for all of them.
 ## Development
 
 ```powershell
-pytest                              # 56 tests, no network or API key needed
+pytest                              # 57 tests, no network or API key needed
 ruff check . ; ruff format --check .
 cd web; npm run lint; npm run build
 ```
