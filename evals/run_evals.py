@@ -108,7 +108,7 @@ def summarize(rows: list[dict]) -> dict:
         "verified_fixes": sum(r["fix_status"] == "verified" for r in rows),
         "rejected_fixes": sum(r["fix_status"] == "rejected" for r in rows),
         "diagnosis_correct": sum(r["diagnosis_correct"] for r in rows),
-        "total_cost_usd": round(sum(r["cost_usd"] for r in rows), 2),
+        "total_cost_usd": round(sum(r["cost_usd"] for r in rows), 3),
         "mean_cost_usd": round(sum(r["cost_usd"] for r in rows) / total, 3) if total else 0,
         "mean_duration_s": round(sum(r["duration_s"] for r in rows) / total, 1) if total else 0,
     }
@@ -123,12 +123,12 @@ def print_table(rows: list[dict], summary: dict) -> None:
         verification = f"{runs - failures}/{runs} passed" if runs else "-"
         print(
             f"| {r['case']} | {r['diagnosis_category']} ({mark}) | {r['fix_status']} | "
-            f"{verification} | ${r['cost_usd']:.2f} | {r['duration_s']:.0f}s |"
+            f"{verification} | ${r['cost_usd']:.3f} | {r['duration_s']:.0f}s |"
         )
     print(
         f"\nVerified fixes: {summary['verified_fixes']}/{summary['cases']}  |  "
         f"Diagnosis accuracy: {summary['diagnosis_correct']}/{summary['cases']}  |  "
-        f"Total cost: ${summary['total_cost_usd']:.2f}"
+        f"Total cost: ${summary['total_cost_usd']:.3f}"
     )
 
 

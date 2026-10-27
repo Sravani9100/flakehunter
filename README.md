@@ -13,7 +13,12 @@ the change doesn't skip, delete, or weaken the test.
 
 </details>
 
-<!-- TODO: add a screenshot of a real AI fix attempt (trace, diff, 100/100 verification) once evals have run. -->
+<details>
+<summary>A real AI fix: 6/20 runs failed before, 100/100 passed after, for $0.002</summary>
+
+![Fix attempt: root cause, diff, agent trace, and before/after verification](docs/fix-attempt.png)
+
+</details>
 
 ## How it works
 
@@ -58,6 +63,30 @@ passes verification.
 | `float_sum` | set order plus non-associative float addition | ~32% |
 | `unseeded_random` | random value that usually, but not always, has a digit | ~18% |
 | `shared_file` | parallel runs overwrite the same file (only flakes in parallel) | ~10% |
+
+### Results
+
+Latest run with `claude-haiku-5-5` (effort `high`, 100 verification runs per fix):
+
+| Case | Diagnosis | Fix | Before → after |
+|---|---|---|---|
+| `async_order` | ordering ✓ | verified | 12/20 failed → 100/100 passed |
+| `counter_race` | concurrency ✓ | verified | 7/20 failed → 100/100 passed |
+| `float_sum` | ordering ✓ | verified | 4/20 failed → 100/100 passed |
+| `hash_order` | ordering ✓ | verified | 11/20 failed → 100/100 passed |
+| `shared_file` | shared_state ✓ | verified | 0/20 failed* → 100/100 passed |
+| `slow_threshold` | timing ✓ | verified, flagged for review† | 8/20 failed → 100/100 passed |
+| `timing_race` | timing ✓ | verified | 4/20 failed → 100/100 passed |
+| `unseeded_random` | randomness ✓ | verified | 4/20 failed → 100/100 passed |
+
+**8/8 verified fixes, 8/8 correct diagnoses, $0.02 total** (about $0.003 and 40 seconds per case).
+
+\* `shared_file` only flakes under parallel runs (~10%) and didn't reproduce in this baseline.
+The agent fixed it from the diagnosis (each run now writes to its own `tmp_path`).
+† The fix removed the wall-clock assertion, so the harness flagged it for a human to confirm
+that speed wasn't a real requirement. That flag is intended behavior.
+
+![Evals page on the dashboard](docs/evals.png)
 
 ```powershell
 python evals/measure_flake_rate.py      # flake rate of each case, no API key needed
